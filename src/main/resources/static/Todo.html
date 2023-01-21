@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TODO Client</title>
+</head>
+<body>
+
+<script>
+    function load() {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:8080/todo", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+
+                document.getElementById("todoList").innerHTML = "";
+
+                result.forEach((e) => {
+                    newItem = document.createElement("div");
+                    newItem.innerText = (e?.done? "Y - " : "N - ") + e?.item;
+                    if (!e?.done) {
+                        markAsDoneButton = document.createElement("button");
+                        markAsDoneButton.innerText = "Mark as done";
+                        markAsDoneButton.setAttribute('onclick', 'javascript : setItemAsDone(' + e?.id + ');')
+                        newItem.appendChild(markAsDoneButton);
+                    }
+                    deleteButton = document.createElement("button");
+                    deleteButton.innerText = "Delete";
+                    deleteButton.setAttribute('onclick', 'javascript : deleteItem(' + e?.id + ');');
+                    newItem.appendChild(deleteButton);
+                    document.getElementById("todoList").appendChild(newItem);
+                })
+
+
+
+
+            })
+            .catch(error => console.log('error', error));
+    }
+    load();
+
+    function addValue(){
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "item": document.getElementById("item").value,
+            "done": document.getElementById("done").checked
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:8080/todo", requestOptions)
+            .then(response => response.text())
+            .then(result => {console.log(result); load();})
+            .catch(error => console.log('error', error));
+    }
+
+    function deleteItem(id) {
+        var requestOptions = {
+            method: 'DELETE',
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:8080/todo"+id, requestOptions)
+            .then(response => response.text())
+            .then(result => {console.log(result); load();})
+            .catch(error => console.log('error', error));
+    }
+
+    function setItemAsDone(id) {
+        var requestOptions = {
+            method: 'PUT',
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:8080/todo"+id, requestOptions)
+            .then(response => response.text())
+            .then(result => {console.log(result); load();})
+            .catch(error => console.log('error', error));
+    }
+</script>
+
+<h1>TODO List</h1>
+<div id="todoList"></div>
+
+<div>
+    <input id="item" type="text">
+    <input id="done" type="checkbox">
+    <button id="add-button" onclick="addValue()">ADD</button>
+
+</div>
+
+</body>
+</html>
