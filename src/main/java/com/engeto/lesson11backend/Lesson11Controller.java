@@ -92,7 +92,8 @@ public class Lesson11Controller {
     @PutMapping("/todo2/{id}")
     public void putItemFromTodo(@PathVariable("id") Long id, @RequestBody TodoItem todoItem) throws SQLException {
 //        todoItemService.setItemAsDone(id);
-        System.out.println("");
+//        System.out.println("");
+        todoItemService.changeItemFromTodo(id, todoItem);
     }
 
     @PutMapping("/todo/{id}")

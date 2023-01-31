@@ -20,6 +20,8 @@ public class TodoItem {
         this.done = done;
     }
 
+    public TodoItem() {}
+
     public Long getId() {
         return id;
     }
