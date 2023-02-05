@@ -37,7 +37,7 @@
     var idTmp = document.getElementById("id").value;
 
     var raw = JSON.stringify({
-            "id": idTmp,
+<!--            "id": idTmp,-->
             "item": document.getElementById("text").value,
             "done": document.getElementById("done").checked
         });
@@ -51,7 +51,7 @@
 
     fetch("http://localhost:8080/todo2/"+idTmp, requestOptions)
             .then(response => response.text())
-            .then(result => {console.log(result);})
+            .then(result => console.log(result))
             .catch(error => console.log('error', error));
 
   }
